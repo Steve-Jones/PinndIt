@@ -119,7 +119,7 @@ PinnClient.prototype = {
                 }
             }
             if(type === 'refresh'){
-                isTimePostedPast_Seconds(600);
+                isTimePostedPast_Seconds(30);
                 for(var i =0; i<that.pinnData.length;i++){
                     var LatLng = new google.maps.LatLng(that.pinnData[i].eventk, that.pinnData[i].eventB);
                     addOldPinn(LatLng);

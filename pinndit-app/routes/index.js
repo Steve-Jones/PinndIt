@@ -26,11 +26,11 @@ router.get('/', function(req, res) {
     res.render('index', { title: 'Pinndit' });
 });
 
- // var getttt = getPinnID(p.k, p.B);
-        // db.markInactive(getttt, function(error, result){
-        //     if(error) return console.log(error);
-        //     console.log("Event Name: " + result.EventName + " added");
-        // });
+    // var mark = getPinnID(p.k, p.B);
+    // db.markInactive(mark, function(error, result){
+    //     if(error) return console.log(error);
+    //     console.log("Event Name: " + result.EventName + " added");
+    // });
 
 //Will work once up/down is implemented
 
@@ -86,6 +86,16 @@ router.post('/removepinn', function (req, res) {
   for(var i = pinnData.length - 1; i >= 0; i--){
     if(pinnData[i].eventk === k){
       console.log('removed post: ' + '(k: ' + k + ') ' + '(B: ' + B + ')');
+
+      //Marks pinn inactive in database
+      var pinn2 = {Latitude: k, Longitude: B};
+      db.getID(pinn2, function(error, result1){
+        if(error) return console.log(error);
+        db.markInactive(result1.PinnID, function(error, result){
+          if(error) return console.log(error);
+        });
+      });
+
       for(var j = comments.length - 1; j >= 0; j--){
         if(pinnData[i].eventk === comments[j].eventk){
           console.log('removed comment: ' + '(k: ' + k + ') ' + '(B: ' + B + ')');
