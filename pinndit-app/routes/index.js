@@ -97,13 +97,6 @@ router.post('/postpinn', function (req, res) {
 router.post('/removepinn', function (req, res) {
   var k = req.body.k;
   var B = req.body.B;
-  getPinnID(k, B,function(error, PinnID){
-    if(error){console.log(error);return;}
-        db.getPinn(PinnID, function(error, result){
-            if(error){console.log(error);return;}
-            res.json(result);
-        });
-    });
   // getPinnID(k, B,function(error, PinnID){
   //       if(error){console.log(error);return;}
   //           db.markInactive(PinnID, function(error, result){
