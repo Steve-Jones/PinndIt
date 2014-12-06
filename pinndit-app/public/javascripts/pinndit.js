@@ -115,7 +115,7 @@ PinnClient.prototype = {
                 that.view2.val(data.Description);
             }
             if(type === 'refresh'){
-                isTimePostedPast_Seconds(600);
+                isTimePostedPast_Seconds(30);
                 for(var i =0; i<that.pinnData.length;i++){
                     var LatLng = new google.maps.LatLng(that.pinnData[i].Latitude, that.pinnData[i].Longitude);
                     addOldPinn(LatLng);
