@@ -22,3 +22,9 @@ We wrote a proposal consisting of an introduction to the team, the problem state
 
 The design specification is the listing of each of the components for our product and how they all interact with one another. It contains 
 the outline for who is doing what in the project as well as what the project summary is. This is all in the dspec.md.
+
+# Final Product
+
+The instructions on how to set up the database is in database folder. There are README's to help with the setup. Otherwise the server is run with the standard express wwww.
+The workable code is located in pinndit-app. Here is the link to our google drive: [link to our drive](https://drive.google.com/folderview?id=0B0UfL9fz95t6Yk9CQUxRUWx3RmM&usp=sharing)
+
