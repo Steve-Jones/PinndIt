@@ -27,4 +27,5 @@ the outline for who is doing what in the project as well as what the project sum
 
 The instructions on how to set up the database is in database folder. There are README's to help with the setup. Otherwise the server is run with the standard express wwww.
 The workable code is located in pinndit-app. Here is the link to our google drive: [link to our drive](https://drive.google.com/folderview?id=0B0UfL9fz95t6Yk9CQUxRUWx3RmM&usp=sharing)
+If functionality does not work as demonstrated try the cookie branch, it does not have the db, but works more reliably.
 
