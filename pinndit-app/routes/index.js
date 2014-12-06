@@ -31,6 +31,20 @@ router.get('/', function(req, res) {
     //     if(error) return console.log(error);
     //     console.log("Event Name: " + result.EventName + " added");
     // });
+//function isTimePostedPast_Seconds(seconds){
+//    var currentTime = parseInt(new Date() / 1000,10);
+//    for(var i = pinnData.length - 1; i >= 0; i--){
+//        var p = pinnData[i];
+//        // var getttt = getPinnID(p.k, p.B);
+//        // db.markInactive(getttt, function(error, result){
+//        //     if(error) return console.log(error);
+//        //     console.log("Event Name: " + result.EventName + " added");
+//        // });
+//        if((currentTime - seconds) > p.timePosted){
+//            pinnData.splice(i, 1);
+//        }
+//    }
+//}
 
 //Will work once up/down is implemented
 
@@ -83,18 +97,25 @@ router.post('/postpinn', function (req, res) {
 router.post('/removepinn', function (req, res) {
   var k = req.body.k;
   var B = req.body.B;
+  getPinnID(k, B,function(error, PinnID){
+    if(error){console.log(error);return;}
+        db.getPinn(PinnID, function(error, result){
+            if(error){console.log(error);return;}
+            res.json(result);
+        });
+    });
+  // getPinnID(k, B,function(error, PinnID){
+  //       if(error){console.log(error);return;}
+  //           db.markInactive(PinnID, function(error, result){
+  //               if(error){console.log(error);return;}
+  //               res.json(result);
+  //           });
+  //       });
   for(var i = pinnData.length - 1; i >= 0; i--){
     if(pinnData[i].eventk === k){
       console.log('removed post: ' + '(k: ' + k + ') ' + '(B: ' + B + ')');
 
       //Marks pinn inactive in database
-      var pinn2 = {Latitude: k, Longitude: B};
-      db.getID(pinn2, function(error, result1){
-        if(error) return console.log(error);
-        db.markInactive(result1.PinnID, function(error, result){
-          if(error) return console.log(error);
-        });
-      });
 
       for(var j = comments.length - 1; j >= 0; j--){
         if(pinnData[i].eventk === comments[j].eventk){
@@ -127,7 +148,7 @@ router.post('/postcomment', function (req, res) {
     res.json({ status: 'OK'});
 });
 
-    router.post('/checkcomments', function (req, res) {
+router.post('/checkcomments', function (req, res) {
     var last = parseInt(req.body.last, 10);
     var rest = comments.slice(last, comments.length);
     res.json(rest);
@@ -147,10 +168,33 @@ router.post('/checkcomments', function (req, res) {
 */
 
 router.post('/checkpinns', function (req, res) {
-    console.log('Active Number of Pinns: ' + pinnData.length);
-    var last = parseInt(req.body.last, 10);
-    var rest = pinnData.slice(last, pinnData.length);
-    res.json(rest);
+    var k = req.body.k;
+    var B = req.body.B;
+    var minLat = req.body.minLat;
+    var maxLat = req.body.maxLat;
+    var minLong = req.body.minLong;
+    var maxLong = req.body.maxLong;
+    var selecting = req.body.selecting;
+    console.log("check pinns: " + selecting);
+    if(selecting ===  '1') {
+        console.log("get Pinn ID: " + k +","+ B);
+        getPinnID(k, B,function(error, PinnID){
+            if(error){console.log(error);return;}
+            db.getPinn(PinnID, function(error, result){
+                if(error){console.log(error);return;}
+                res.json(result);
+            });
+        });
+    }
+    else if(selecting === '0'){
+        console.log("index.js: getVisiblePinns call (" + minLat + ", " + maxLat + ", " + ", " + minLong + ", " + maxLong+ ")");
+        db.getVisiblePinns(minLat, maxLat, minLong, maxLong, function(error, result){
+            if(error) return console.log(error);
+
+            res.json(result);
+        });
+    }
+
 });
 
 module.exports = router;
@@ -186,3 +230,14 @@ function getPinnID(k, B){
     });
 }
 */
+
+function getPinnID(k, B, callback){
+    console.log("boop");
+    var pinn = [k, B];
+    console.log("pinnArr: " + pinn);
+    db.getID(pinn, function(error, result){
+        if(error){callback(error);return;}
+        console.log(result.PinnID);
+        callback(error, result.PinnID);
+    });
+}
